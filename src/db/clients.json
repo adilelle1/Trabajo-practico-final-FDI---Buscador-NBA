@@ -1,0 +1,32 @@
+[
+  {
+    "client_id": "0000111",
+    "first_name": "Alejo",
+    "last_name": "Di Lelle",
+    "date_of_birth": "12/11/1998",
+    "email": "lmoon@mail.com",
+    "client_status": "ACTIVE",
+    "category": "All Star",
+    "subscription_info": "Yearly"
+  },
+  {
+    "client_id": "0000112",
+    "first_name": "Kevin",
+    "last_name": "Harnan",
+    "date_of_birth": "12/08/2000",
+    "email": "kh@mail.com",
+    "client_status": "ACTIVE",
+    "category": "Hall of Fame",
+    "subscription_info": "Monthly"
+  },
+  {
+    "client_id": "0000113",
+    "first_name": "Ignacio",
+    "last_name": "Freiria",
+    "date_of_birth": "12/06/2001",
+    "email": "nfreira@mail.com",
+    "client_status": "INACTIVE",
+    "category": "Rookie",
+    "subscription_info": "Free Trial"
+  }
+]
