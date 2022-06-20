@@ -6,7 +6,7 @@ from src.db.client_store import store_client_json
 from src.models.players import Players, PlayerStats
 from src.team_id_finder import team_finder
 from src.models.teams import Teams
-from src.models.clients import Client
+from src.models.clients import Client, Rookie, AllStar, HallOfFame
 from db.client_loader import load_clients
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ clients = load_clients()
 
 
 #
-# [GET] Estadística de equipo por temporada
+# [GET] Informacion y estadisticas del equipo por temporada
 
 @app.route('/api/NBA/teams', methods=['GET'])
 def get_team():
@@ -60,8 +60,8 @@ def get_team():
                     rebounds = round(value / games, 2)
                 elif key == 'assists':
                     assists = round(value / games, 2)
-    team = Teams(team_id, team_name, team_city, season, games, points, rebounds, assists)
-    return jsonify({'team': team.serialize(), 'status': 'ok'})
+        team = Teams(team_id, team_name, team_city, season, games, points, rebounds, assists)
+        return jsonify({'team': team.serialize(), 'status': 'ok'})
 
 
 #
@@ -100,8 +100,8 @@ def get_player():
             except TypeError:
                 continue
 
-    for player in players:
-        return jsonify({'players': player.serialize(), 'status': 'ok'})
+        for player in players:
+            return jsonify({'players': player.serialize(), 'status': 'ok'})
 
 
 #
@@ -209,18 +209,33 @@ def create_client():
 
 
 #
-# [PUT] Actualizar la categoria del cliente -- no esta corriendo bien
+# [PUT] Actualizar al cliente
 
-@app.route("/api/NBA/clients/category", methods=['PUT'])
-def upgrade_client_category():
+@app.route("/api/NBA/clients/update", methods=['PUT'])
+def update_client():
     client_id = request.args.get('client_id')
-    new_category = request.args.get('new_category')
+    body = request.json
+    firstname = body['firstname']
+    lastname = body['lastname']
+    date_of_birth = body['date_of_birth']
+    email = body['email']
+    client_status = body['client_status']
+    category = body['category']
+    subscription = body['subscription']
+
     try:
         for client in clients:
             if client['client_id'] == client_id:
-                upgraded_client = Client.category_upgrade(client, new_category)
 
-        clients.append(upgraded_client)
+                if category == "Rookie":
+                    updated_client = Rookie(client_id,firstname,lastname,date_of_birth,email,client_status,category,
+                                            subscription)
+                elif category == "All star":
+                    updated_client = AllStar(client_id,firstname,lastname,date_of_birth,email,client_status,category,
+                                             subscription)
+                elif category == "Hall of fame":
+                    updated_client = HallOfFame(client_id,firstname,lastname,date_of_birth,email,client_status,category,
+                                                subscription)
 
     except KeyError as key_err:
         missing_param = (key_err.__str__())
@@ -229,10 +244,22 @@ def upgrade_client_category():
             error_description="Bad request",
             error_body=missing_param
         ), 400
+    return jsonify([{"Client": updated_client.__dict__}])
 
-    return jsonify(upgraded_client.serialize())
+
+#
+# [PUT] Eliminar cliente
+
+@app.route("/api/NBA/clients/delete", methods=['DELETE'])
+def delete_client():
+    clients = load_clients()
+    client_id = request.args.get('client_id')
+    en = enumerate(clients)
+    for indice, client in en:
+        if client['client_id'] == client_id:
+            clients[indice + 1] = []
+            return jsonify({"client": client.serialize(), "client_id": client_id, "status": "ok"})
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
