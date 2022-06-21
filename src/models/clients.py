@@ -57,6 +57,14 @@ class Rookie(Client):
             'subscription': self.subscription,
         }
 
+    def category_upgrade(self, new_category):
+        if new_category == "All star" or new_category == "all star" or new_category == "All Star":
+            client = AllStar(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                             self.client_status, new_category, self.subscription)
+        elif new_category == "Hall of fame" or new_category == "hall of fame":
+            client = HallOfFame(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                                self.client_status, self.subscription)
+
 
 class AllStar(Client):
     def __init__(self, client_id, firstname, lastname, date_of_birth, email, client_status, category,
@@ -77,6 +85,14 @@ class AllStar(Client):
             'category': self.category,
             'subscription': self.subscription,
         }
+
+    def category_upgrade(self, new_category):
+        if new_category == "Rookie" or new_category == "rookie":
+            client = Rookie(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                            self.client_status, new_category, self.subscription)
+        elif new_category == "Hall of fame" or new_category == "hall of fame":
+            client = HallOfFame(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                                self.client_status, self.subscription)
 
 
 class HallOfFame(Client):
@@ -99,3 +115,11 @@ class HallOfFame(Client):
             'category': self.category,
             'subscription': self.subscription,
         }
+
+    def category_upgrade(self, new_category):
+        if new_category == "Rookie" or new_category == "rookie":
+            client = Rookie(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                            self.client_status, new_category, self.subscription)
+        elif new_category == "All star" or new_category == "all star" or new_category == "All Star":
+            client = AllStar(self.client_id, self.firstname, self.lastname, self.date_of_birth, self.email,
+                             self.client_status, new_category, self.subscription)

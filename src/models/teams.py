@@ -1,7 +1,7 @@
 class Teams:
 
     def __init__(self, team_id, name, city, season, games, points, rebounds, assists):
-        self.team_id = team_id
+        self.__team_id = team_id
         self.name = name
         self.city = city
         self.season = season
@@ -15,7 +15,6 @@ class Teams:
 
     def serialize(self):
         return {
-            'team_id': self.team_id,
             'name': self.name,
             'city': self.city,
             'season': self.season,

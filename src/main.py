@@ -1,7 +1,6 @@
 import statistics
 from flask import Flask, jsonify, request
 import requests
-
 from src.db.client_store import store_client_json
 from src.models.players import Players, PlayerStats
 from src.team_id_finder import team_finder
@@ -176,7 +175,7 @@ def get_all_clients():
 
 
 #
-# [POST] Crear clientesy agregarlos al archivo clientdb json
+# [POST] Crear clientes y agregarlos al archivo client_db json
 
 @app.route("/api/NBA/clients/", methods=['POST'])
 def create_client():
@@ -213,15 +212,15 @@ def create_client():
 
 @app.route("/api/NBA/clients/update", methods=['PUT'])
 def update_client():
-    client_id = request.args.get('client_id')
     body = request.json
-    firstname = body['firstname']
-    lastname = body['lastname']
+    client_id = body['client_id']
+    firstname = body['first_name']
+    lastname = body['last_name']
     date_of_birth = body['date_of_birth']
     email = body['email']
     client_status = body['client_status']
     category = body['category']
-    subscription = body['subscription']
+    subscription = body['subscription_info']
 
     try:
         for client in clients:
@@ -244,11 +243,11 @@ def update_client():
             error_description="Bad request",
             error_body=missing_param
         ), 400
-    return jsonify([{"Client": updated_client.__dict__}])
+    return jsonify([{"Client": updated_client.serialize()}])
 
 
 #
-# [PUT] Eliminar cliente
+# [DELETE] Eliminar cliente
 
 @app.route("/api/NBA/clients/delete", methods=['DELETE'])
 def delete_client():
@@ -257,7 +256,7 @@ def delete_client():
     en = enumerate(clients)
     for indice, client in en:
         if client['client_id'] == client_id:
-            clients[indice + 1] = []
+            clients[indice] = []
             return jsonify({"client": client.serialize(), "client_id": client_id, "status": "ok"})
 
 
