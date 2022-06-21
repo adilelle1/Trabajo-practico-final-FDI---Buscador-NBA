@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('pruebaSQL.db')
+conn = sqlite3.connect('participantes_SQL.db')
 
 c = conn.cursor()
 
@@ -22,7 +22,7 @@ print(c.fetchall())
 
 
 # UPDATE = Actualiza valores de la tabla clients, en este caso cambia la edad de Alejo de 24 a 23 años
-print("\nMetodo UPDATE - Actualiza la tabla clients")
+print("\nMetodo UPDATE - Actualiza una columna de la tabla clients")
 
 with conn:
     c.execute("UPDATE clients set birth = '23' WHERE first_name = 'Alejo' AND last_name = 'Di Lelle'")
@@ -32,7 +32,7 @@ print(c.fetchall())
 
 
 # DELETE = Borra el registro del cliente "Catalina Dapena" la tabla clients
-print("\nMetodo DELETE - Elimina de la tabla clients")
+print("\nMetodo DELETE - Elimina un cliente de la tabla clients")
 
 with conn:
     c.execute("DELETE FROM clients WHERE first_name = 'Catalina' AND last_name = 'Dapena'")
